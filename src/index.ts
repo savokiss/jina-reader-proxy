@@ -12,6 +12,18 @@ app.get("/", (c) => {
   return c.text("Hello, This is Jina Reader Proxy!");
 });
 
+app.get("/reader", async (c) => {
+  const url = c.req.query("url") || "";
+  if (!url || !url.startsWith("http")) {
+    return c.text("Url invalid", 400);
+  }
+  const target = getTargetUrl(url);
+
+  const markdown: string = await fetch(target).then((res) => res.text());
+
+  return c.text(markdown);
+});
+
 app.get("/markdown", async (c) => {
   const url = c.req.query("url") || "";
   if (!url || !url.startsWith("http")) {
@@ -40,7 +52,7 @@ app.get("/text", async (c) => {
     headers: {
       Accept: "application/json",
       "x-respond-with": "text",
-    }
+    },
   }).then((res) => res.json());
 
   return c.json(res);
@@ -57,7 +69,7 @@ app.get("/html", async (c) => {
     headers: {
       Accept: "application/json",
       "x-respond-with": "html",
-    }
+    },
   }).then((res) => res.json());
 
   return c.json(res);
