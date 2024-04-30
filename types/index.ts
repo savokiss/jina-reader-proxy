@@ -32,4 +32,11 @@ declare namespace Jina {
       screenshotUrl: string;
     };
   };
+
+  export type NextDataResult = {
+    code: number;
+    data: {
+      nextData: any;
+    };
+  }
 }

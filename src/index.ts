@@ -96,17 +96,18 @@ app.get("/nextdata", async (c) => {
   if (!res.data.html) {
     return c.json({
       code: 400,
-      error: "Jina error"
+      error: "Jina error",
     });
   }
 
   const nextData = await extractNextData(res.data.html);
-    return c.json({
-      code: 200,
-      data: {
-        nextData,
-      },
-    })
+  
+  return c.json({
+    code: 200,
+    data: {
+      nextData,
+    },
+  });
 });
 
 export default app;
