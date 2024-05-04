@@ -18,3 +18,32 @@ export async function extractNextData (html: string) {
   
   return JSON.parse(scriptContent);
 }
+
+export async function extractMetaData (html: string) {
+  const response = new Response(html, {
+    headers: { 'Content-Type': 'text/html' }
+  });
+
+  let title = '';
+  let description = '';
+
+  const rewriter = new HTMLRewriter().on('title', {
+    text(text) {
+      if (!text.lastInTextNode) {
+        title += text.text;
+      }
+    }
+  }).on('meta[name="description"]', {
+    element(element) {
+      const desc = element.getAttribute('content');
+      description = desc || '';
+    }
+  })
+
+  await rewriter.transform(response).text();
+  
+  return {
+    title,
+    description
+  };
+}

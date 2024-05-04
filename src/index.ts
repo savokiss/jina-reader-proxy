@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { getText, getHtml, getJson, getScreenshot } from "./utils/jina";
-import { extractNextData } from "./utils/html";
+import { extractMetaData, extractNextData } from "./utils/html";
 
 type Variables = {
   url: string;
@@ -106,6 +106,29 @@ app.get("/nextdata", async (c) => {
     code: 200,
     data: {
       nextData,
+    },
+  });
+});
+
+app.get("/meta", async (c) => {
+  const url = c.get("url");
+
+  const target = getTargetUrl(url);
+  const res = await getHtml(target);
+
+  if (!res.data.html) {
+    return c.json({
+      code: 400,
+      error: "Jina error",
+    });
+  }
+
+  const meta = await extractMetaData(res.data.html);
+  
+  return c.json({
+    code: 200,
+    data: {
+      meta,
     },
   });
 });
