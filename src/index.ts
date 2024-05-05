@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { getText, getHtml, getJson, getScreenshot } from "./utils/jina";
 import { extractMetaData, extractNextData } from "./utils/html";
+import { removeImageTag } from './utils/markdown'
 
 type Variables = {
   url: string;
@@ -30,18 +31,28 @@ app.use(async (c, next) => {
 
 app.get("/reader", async (c) => {
   const url = c.get("url");
+  const noImage = c.req.query("noimage");
 
   const target = getTargetUrl(url);
-  const markdown: string = await fetch(target).then((res) => res.text());
+  let markdown: string = await fetch(target).then((res) => res.text());
+
+  if (noImage) {
+    markdown = removeImageTag(markdown);
+  }
 
   return c.text(markdown);
 });
 
 app.get("/markdown", async (c) => {
   const url = c.get("url");
+  const noImage = c.req.query("noimage");
 
   const target = getTargetUrl(url);
-  const markdown: string = await fetch(target).then((res) => res.text());
+  let markdown: string = await fetch(target).then((res) => res.text());
+
+  if (noImage) {
+    markdown = removeImageTag(markdown);
+  }
 
   return c.json({
     code: 200,
