@@ -1,3 +1,3 @@
 export function removeImageTag(markdown: string) {
-  return markdown.replace(/!\[.*?\]\(.*?\)/g, "");
+  return markdown.replace(/!\[.*?\]\((?:.*?[^\\])?\)/g, '');
 }
