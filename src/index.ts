@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getText, getHtml, getJson, getScreenshot } from "./utils/jina";
+import { getText, getHtml, getJson, getScreenshot, getMarkdown } from "./utils/jina";
 import { extractMetaData, extractNextData } from "./utils/html";
 import { removeImageTag } from './utils/markdown'
 
@@ -32,9 +32,10 @@ app.use(async (c, next) => {
 app.get("/reader", async (c) => {
   const url = c.get("url");
   const noImage = c.req.query("noimage");
+  const queries = c.req.queries();
 
   const target = getTargetUrl(url);
-  let markdown: string = await fetch(target).then((res) => res.text());
+  let markdown = await getMarkdown(target, queries);
 
   if (noImage) {
     markdown = removeImageTag(markdown);
@@ -48,7 +49,8 @@ app.get("/markdown", async (c) => {
   const noImage = c.req.query("noimage");
 
   const target = getTargetUrl(url);
-  let markdown: string = await fetch(target).then((res) => res.text());
+
+  let markdown = await getMarkdown(target)
 
   if (noImage) {
     markdown = removeImageTag(markdown);

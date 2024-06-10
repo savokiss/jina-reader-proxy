@@ -39,4 +39,14 @@ declare namespace Jina {
       nextData: any;
     };
   }
+
+  export type XOptions = {
+    [key: string]: any;
+    withImageSummary?: boolean;
+    withLinksSumarry?: boolean;
+    withGeneratedAlt?: boolean;
+    noCache?: boolean;
+    targetSelector?: string;
+    returnFormat?: string;
+  }
 }
