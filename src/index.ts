@@ -32,7 +32,7 @@ app.use(async (c, next) => {
 app.get("/reader", async (c) => {
   const url = c.get("url");
   const noImage = c.req.query("noimage");
-  const queries = c.req.queries();
+  const queries = c.req.query();
 
   const target = getTargetUrl(url);
   let markdown = await getMarkdown(target, queries);
