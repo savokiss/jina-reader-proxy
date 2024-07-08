@@ -1,6 +1,6 @@
 const optionsMap: Record<string, string> = {
   "withImageSummary": "X-With-Images-Summary",
-  "withLinksSumarry": "X-With-Links-Summary",
+  "withLinksSummary": "X-With-Links-Summary",
   "withGeneratedAlt": "X-With-Generated-Alt",
   "noCache": "X-No-Cache",
   "targetSelector": "X-Target-Selector",
