@@ -4,7 +4,9 @@ const optionsMap: Record<string, string> = {
   "withGeneratedAlt": "X-With-Generated-Alt",
   "noCache": "X-No-Cache",
   "targetSelector": "X-Target-Selector",
+  "waitForSelector": "X-Wait-For-Selector",
   "returnFormat": "X-Return-Format",
+  "timeout": "X-Timeout",
 }
 
 function generateOptions (options: Jina.XOptions) {
@@ -39,11 +41,14 @@ export async function getText (url: string) {
   return res;
 }
 
-export async function getHtml (url: string) {
+export async function getHtml (url: string, options: Jina.XOptions = {}) {
+  const xOptions = generateOptions(options);
+
   const res: Jina.HTMLResult = await fetch(url, {
     headers: {
       Accept: "application/json",
       "x-respond-with": "html",
+      ...xOptions
     },
   }).then((res) => res.json());
   return res;
@@ -58,11 +63,14 @@ export async function getJson (url: string) {
   return res;
 }
 
-export async function getScreenshot(url: string){
+export async function getScreenshot(url: string, options: Jina.XOptions = {}){
+  const xOptions = generateOptions(options);
+
   const res: Jina.ScreenshotResult = await fetch(url, {
     headers: {
       Accept: "application/json",
       "x-respond-with": "screenshot",
+      ...xOptions
     },
   }).then((res) => res.json());
   return res;

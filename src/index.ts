@@ -75,9 +75,10 @@ app.get("/text", async (c) => {
 
 app.get("/html", async (c) => {
   const url = c.get("url");
+  const queries = c.req.query();
 
   const target = getTargetUrl(url);
-  const res = await getHtml(target);
+  const res = await getHtml(target, queries);
 
   return c.json(res);
 });
@@ -93,9 +94,10 @@ app.get("/json", async (c) => {
 
 app.get("/screenshot", async (c) => {
   const url = c.get("url");
+  const queries = c.req.query();
 
   const target = getTargetUrl(url);
-  const res = await getScreenshot(target);
+  const res = await getScreenshot(target, queries);
 
   return c.json(res);
 });
