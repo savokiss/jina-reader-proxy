@@ -41,6 +41,15 @@ export async function getText (url: string) {
   return res;
 }
 
+export async function getRaw (url: string) {
+  const res: any = await fetch(url, {
+    headers: {
+      "x-respond-with": "text",
+    },
+  });
+  return res;
+}
+
 export async function getHtml (url: string, options: Jina.XOptions = {}) {
   const xOptions = generateOptions(options);
 

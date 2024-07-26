@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getText, getHtml, getJson, getScreenshot, getMarkdown } from "./utils/jina";
+import { getText, getHtml, getJson, getScreenshot, getMarkdown, getRaw } from "./utils/jina";
 import { extractMetaData, extractNextData } from "./utils/html";
 import { removeImageTag } from './utils/markdown'
 
@@ -100,6 +100,13 @@ app.get("/screenshot", async (c) => {
   const res = await getScreenshot(target, queries);
 
   return c.json(res);
+});
+
+app.get("/raw", async (c) => {
+  const url = c.get("url");
+  const target = getTargetUrl(url);
+  const res = await getRaw(target);
+  return res
 });
 
 app.get("/nextdata", async (c) => {
