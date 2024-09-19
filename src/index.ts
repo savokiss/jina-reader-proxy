@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { getText, getHtml, getJson, getScreenshot, getMarkdown, getRaw } from "./utils/jina";
 import { extractMetaData, extractNextData } from "./utils/html";
 import { removeImageTag } from './utils/markdown'
+import { getOGImage } from './utils/og'
 
 type Variables = {
   url: string;
@@ -153,6 +154,16 @@ app.get("/meta", async (c) => {
       meta,
     },
   });
+});
+
+app.get("/og", async (c) => {
+  const url = c.get("url");
+  const queries = c.req.query();
+
+  const target = getTargetUrl(url);
+  const res = await getOGImage(target, queries);
+
+  return c.redirect(res);
 });
 
 export default app;
