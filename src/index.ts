@@ -48,10 +48,11 @@ app.get("/reader", async (c) => {
 app.get("/markdown", async (c) => {
   const url = c.get("url");
   const noImage = c.req.query("noimage");
+  const queries = c.req.query();
 
   const target = getTargetUrl(url);
 
-  let markdown = await getMarkdown(target)
+  let markdown = await getMarkdown(target, queries)
 
   if (noImage) {
     markdown = removeImageTag(markdown);

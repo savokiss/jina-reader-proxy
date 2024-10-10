@@ -47,3 +47,17 @@ export async function extractMetaData (html: string) {
     description
   };
 }
+
+export async function extractLdJson (html: string) {
+  const response = new Response(html, {
+    headers: { 'Content-Type': 'text/html' }
+  });
+
+  const rewriter = new HTMLRewriter().on('script[type="application/ld+json"]', {
+    text(text) {
+      return JSON.parse(text.text);
+    }
+  });
+
+  await rewriter.transform(response).text();
+}
